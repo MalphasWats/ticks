@@ -7,9 +7,6 @@ ADMIN_LABEL = 'ticks'
 ICON = 'check'
 
 import ticks.core
-
-def get_admin_panel():
-    return render_template('ticks_widgets/admin_panel.html')
-    
-    
+   
 from ticks.core import get_content_widget
+from ticks.core import get_admin_panel

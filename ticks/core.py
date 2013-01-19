@@ -19,3 +19,7 @@ def save_todo_item():
     
 def get_content_widget():
     return render_template('ticks_widgets/content_widget.html')
+    
+    
+def get_admin_panel():
+    return render_template('ticks_widgets/admin_panel.html')
