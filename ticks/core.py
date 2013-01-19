@@ -3,14 +3,19 @@ from flask import request, session, g, redirect, url_for, abort, render_template
 #un-comment if public_endpoints needed.
 #from instruments.core import public_endpoint
 
-from skeleton import blueprint
+from ticks import blueprint
 import database
                    
 
 @blueprint.route('/')
 def index():
-    return render_template('skeleton.html')
+    return render_template('ticks.html')
+    
+    
+@blueprint.route('/save')
+def save_todo_item():
+    pass
     
     
 def get_content_widget():
-    return render_template('skeleton_widgets/content_widget.html')
+    return render_template('ticks_widgets/content_widget.html')

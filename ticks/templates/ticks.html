@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block html_head %}
+    <link rel="stylesheet" type="text/css" href="{{url_for('ticks.static', filename='ticks.css')}}">
+{% endblock %}
+
+
+{% block html_title %}ticks{% endblock %}
+{% block title %}ticks{% endblock %}
+
+{% block content %}
+    <p>ticks</p>
+{% endblock %}
+
+{% block sidebar %}
+<section>
+    <h1>New TODO item</h1>
+    
+    <form method="post" action="{{ url_for('ticks.save_todo_item') }}" id="new_todo_form">
+    <p><textarea name="text" rows="6" cols="40" tabindex="1"># title
+
+notes</textarea></p>
+
+    <p>
+        <label class="button"><input name="save" type="submit" tabindex="2" value="Save"></label> 
+    </p>
+  </form>
+</section>
+  
+{% endblock %}
