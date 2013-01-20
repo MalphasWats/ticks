@@ -21,10 +21,10 @@ def index():
 @blueprint.route('/save', methods=['POST'])
 def save_todo_item():
     task_id = request.form.get('task_id')
-    project = request.form.get('project')
+    project_id = request.form.get('project_id')
     text = request.form.get('text')
     
-    database.save_tick(text, project, task_id)
+    database.save_tick(text, project_id, task_id)
     
     return redirect(url_for('ticks.index'))
     
