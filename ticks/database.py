@@ -45,3 +45,23 @@ def tables_created():
         return True
         
     return False
+    
+    
+def save_tick(content, project_id=None, task_id=None):
+    pass
+    
+    
+def toggle_complete_tick(task_id):
+    pass
+    
+    
+def get_incomplete_ticks():
+    pass
+    
+    
+def get_projects():
+    pass
+    
+    
+def save_project(project_name):
+    pass
