@@ -1,4 +1,5 @@
 import psycopg2
+import datetime
 
 import instruments.database as db
 
@@ -68,9 +69,14 @@ def toggle_complete_tick(task_id):
     
     
 def get_incomplete_ticks():
-    query = """SELECT task_id, task_content FROM ticks WHERE completed IS NULL;"""
+    query = """
+            SELECT task_id, task_content
+            FROM ticks 
+            WHERE completed IS NULL
+            OR completed > %s;"""
     
-    tasks = db.execute_query(query)
+    twelve_hours_ago = datetime.datetime.now() - datetime.timedelta(hours=12)
+    tasks = db.execute_query(query, (twelve_hours_ago,))
     
     return tasks
     
