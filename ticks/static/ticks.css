@@ -6,3 +6,31 @@
     
     height:80px;
 }
+
+ul.ticks
+{
+    list-style-type:none;
+    list-style-position: inside;
+}
+
+ul.ticks li
+{
+    overflow:auto;
+}
+
+ul.ticks li:hover {background-color:yellow;}
+
+ul.ticks li>span, ul.ticks li>div {display:table-cell;}
+ul.ticks li>span
+{
+    font-family:'FontAwesome';
+    font-size:22pt;
+    
+    vertical-align: middle;
+    
+    padding-right:22px;
+}
+
+ul.ticks li>span:after { content: "\f096"; }
+ul.ticks li>span:hover:after { content: "\f046"; color:green;}
+ul.ticks li>span:active:after { content: "\f046"; color:red;}

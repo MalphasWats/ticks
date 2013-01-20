@@ -11,14 +11,17 @@
 {% block content %}
     <ul class="ticks">
         {% for tick in ticks %}
-        <li>{{tick['task_content'] | markdown | safe}}</li>
+        <li>
+            <span> </span>
+            <div>{{tick['task_content'] | markdown | safe}}</div>
+        </li>
         {% endfor %}
     </ul>
 {% endblock %}
 
 {% block sidebar %}
 <section>
-    <h1>New TODO item</h1>
+    <h1>New Tick</h1>
     
     <form method="post" action="{{ url_for('ticks.save_todo_item') }}" id="new_todo_form">
     <p><textarea name="text" tabindex="1"># title
