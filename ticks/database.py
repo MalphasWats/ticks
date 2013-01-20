@@ -18,7 +18,7 @@ def create_tables():
         project_id SERIAL PRIMARY KEY,
         project_name TEXT NOT NULL
     );
-    CREATE INDEX project_name on ticks_projects(project_name);
+    CREATE INDEX ticks_project_name on ticks_projects(project_name);
 
     CREATE TABLE project_ticks
     (
