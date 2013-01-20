@@ -87,8 +87,8 @@ def get_incomplete_ticks():
             OR completed > %s
             ORDER BY created;"""
     
-    twelve_hours_ago = datetime.datetime.now() - datetime.timedelta(hours=12)
-    tasks = db.execute_query(query, (twelve_hours_ago,))
+    eight_hours_ago = datetime.datetime.now() - datetime.timedelta(hours=8)
+    tasks = db.execute_query(query, (eight_hours_ago,))
     
     return tasks
     
