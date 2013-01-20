@@ -65,12 +65,23 @@ def save_tick(content, project_id=None, task_id=None):
     
     
 def toggle_complete_tick(task_id):
-    pass
+    query = """
+            UPDATE ticks
+            SET completed = CASE
+                              WHEN completed IS NULL THEN CURRENT_TIMESTAMP
+                              ELSE NULL
+                            END
+            WHERE task_id=%s;
+    """
+    db.execute_query(query, (task_id,))
+    
+    return task_id
+    
     
     
 def get_incomplete_ticks():
     query = """
-            SELECT task_id, task_content
+            SELECT task_id, task_content, completed
             FROM ticks 
             WHERE completed IS NULL
             OR completed > %s;"""

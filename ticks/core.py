@@ -14,7 +14,6 @@ def index():
     ticks = database.get_incomplete_ticks()
     
     current_app.jinja_env.filters['markdown'] = markdown
-    
     return render_template('ticks.html', ticks=ticks)
     
     
@@ -37,6 +36,14 @@ def create_tables():
     else:
         flash("Tables already exist!", category='error')
     return redirect(url_for('ticks.index'))
+    
+    
+@blueprint.route('/toggle_complete/<int:task_id>')
+def toggle_complete(task_id):
+    database.toggle_complete_tick(task_id)
+    
+    return redirect(url_for('ticks.index', _anchor="tick_%s" % (task_id,)))
+    #return redirect("%s#tick_%s" % (url_for('ticks.index'), task_id))
     
     
 def get_content_widget():

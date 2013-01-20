@@ -11,8 +11,8 @@
 {% block content %}
     <ul class="ticks">
         {% for tick in ticks %}
-        <li>
-            <span> </span>
+        <li{% if tick['completed'] %} class="complete"{%endif%}>
+            <a href="{{url_for('ticks.toggle_complete', task_id=tick['task_id'])}}" name="tick_{{tick['task_id']}}"> </a>
             <div>{{tick['task_content'] | markdown | safe}}</div>
         </li>
         {% endfor %}
