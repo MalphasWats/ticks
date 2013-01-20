@@ -9,7 +9,11 @@
 {% block title %}ticks{% endblock %}
 
 {% block content %}
-    <p>ticks</p>
+    <ul class="ticks">
+        {% for tick in ticks %}
+        <li>{{tick['task_content'] | markdown | safe}}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
 
 {% block sidebar %}

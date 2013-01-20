@@ -1,20 +1,32 @@
-from flask import request, session, g, redirect, url_for, abort, render_template, flash, jsonify, Response, make_response
+from flask import request, session, g, redirect, url_for, abort, render_template, flash, jsonify, Response, make_response, current_app
 
 #un-comment if public_endpoints needed.
 #from instruments.core import public_endpoint
 
 from ticks import blueprint
 import database
+
+from markdown import markdown
                    
 
 @blueprint.route('/')
 def index():
-    return render_template('ticks.html')
+    ticks = database.get_incomplete_ticks()
+    
+    current_app.jinja_env.filters['markdown'] = markdown
+    
+    return render_template('ticks.html', ticks=ticks)
     
     
-@blueprint.route('/save')
+@blueprint.route('/save', methods=['POST'])
 def save_todo_item():
-    pass
+    task_id = request.form.get('task_id')
+    project = request.form.get('project')
+    text = request.form.get('text')
+    
+    database.save_tick(text, project, task_id)
+    
+    return redirect(url_for('ticks.index'))
     
     
 @blueprint.route('/create_tables')

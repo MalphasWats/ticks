@@ -48,7 +48,19 @@ def tables_created():
     
     
 def save_tick(content, project_id=None, task_id=None):
-    pass
+    if task_id:
+        # update existing task
+        pass
+    else:
+        query = """INSERT INTO ticks (task_content) VALUES (%s) RETURNING task_id;"""
+    
+        task_id = db.execute_query(query, (content,))
+    
+        if project_id:
+            query = """INSERT INTO ticks_projects VALUES(%s,%s) RETURNING project_id;"""
+            db.execute_query(query, (project, task_id))
+        
+    return task_id
     
     
 def toggle_complete_tick(task_id):
@@ -56,7 +68,11 @@ def toggle_complete_tick(task_id):
     
     
 def get_incomplete_ticks():
-    pass
+    query = """SELECT task_id, task_content FROM ticks WHERE completed IS NULL;"""
+    
+    tasks = db.execute_query(query)
+    
+    return tasks
     
     
 def get_projects():
