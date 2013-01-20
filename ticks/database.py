@@ -84,7 +84,8 @@ def get_incomplete_ticks():
             SELECT task_id, task_content, completed
             FROM ticks 
             WHERE completed IS NULL
-            OR completed > %s;"""
+            OR completed > %s
+            ORDER BY created;"""
     
     twelve_hours_ago = datetime.datetime.now() - datetime.timedelta(hours=12)
     tasks = db.execute_query(query, (twelve_hours_ago,))
