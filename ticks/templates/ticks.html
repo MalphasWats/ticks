@@ -10,10 +10,16 @@
 
 {% block content %}
     <ul class="ticks">
-        {% for tick in ticks %}
-        <li{% if tick['completed'] %} class="complete"{%endif%}>
-            <a href="{{url_for('ticks.toggle_complete', task_id=tick['task_id'])}}" name="tick_{{tick['task_id']}}"> </a>
-            <div>{{tick['task_content'] | markdown | safe}}</div>
+        {% for t in ticks %}
+        <li{% if t['completed'] %} class="complete"{%endif%}>
+            <span>
+                <a href="{{url_for('ticks.edit_tick', task_id=t['task_id'])}}"><i class="icon-pencil"></i></a> 
+                <a href="{{url_for('ticks.promote_tick', task_id=t['task_id'])}}"><i class="icon-circle-arrow-up"></i></a> 
+                <a href="{{url_for('ticks.demote_tick', task_id=t['task_id'])}}"><i class="icon-circle-arrow-down"></i></a>
+                <a href="{{url_for('ticks.delete_tick', task_id=t['task_id'])}}"><i class="icon-remove-sign"></i></a> 
+            </span>
+            <a href="{{url_for('ticks.toggle_complete', task_id=t['task_id'])}}" name="tick_{{t['task_id']}}"> </a>
+            <div>{{t['task_content'] | markdown | safe}}</div>
         </li>
         {% endfor %}
     </ul>
@@ -21,6 +27,17 @@
 
 {% block sidebar %}
 <section>
+    {% if tick %}
+    <h1>Edit Tick</h1>
+    <form method="post" action="{{ url_for('ticks.save_todo_item') }}" id="new_todo_form">
+    <input type="hidden" name="task_id" value="{{tick['task_id']}}">
+    <p><textarea name="text" tabindex="1">{{tick['task_content']}}</textarea></p>
+
+    <p>
+        <label class="button"><input name="save" type="submit" tabindex="2" value="Save"></label> 
+    </p>
+    </form>
+    {% else %}
     <h1>New Tick</h1>
     
     <form method="post" action="{{ url_for('ticks.save_todo_item') }}" id="new_todo_form">
@@ -31,7 +48,8 @@ notes</textarea></p>
     <p>
         <label class="button"><input name="save" type="submit" tabindex="2" value="Save"></label> 
     </p>
-  </form>
+    </form>
+    {% endif %}
 </section>
   
 {% endblock %}

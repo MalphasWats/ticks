@@ -11,6 +11,7 @@ def create_tables():
         task_id SERIAL PRIMARY KEY,
         task_content TEXT NOT NULL,
         created timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        priority INTEGER DEFAULT 0,
         completed timestamp DEFAULT NULL
     );
 
@@ -51,15 +52,16 @@ def tables_created():
 def save_tick(content, project_id=None, task_id=None):
     if task_id:
         # update existing task
-        pass
+        query = """UPDATE ticks SET task_content=%s WHERE task_id=%s"""
+        db.execute_query(query, (content,task_id))
+        
     else:
         query = """INSERT INTO ticks (task_content) VALUES (%s) RETURNING task_id;"""
-    
         task_id = db.execute_query(query, (content,))
     
-        if project_id:
-            query = """INSERT INTO ticks_projects VALUES(%s,%s) RETURNING project_id;"""
-            db.execute_query(query, (project, task_id))
+    if project_id:
+        query = """INSERT INTO ticks_projects VALUES(%s,%s) RETURNING project_id;"""
+        db.execute_query(query, (project, task_id))
         
     return task_id
     
@@ -78,6 +80,37 @@ def toggle_complete_tick(task_id):
     return task_id
     
     
+def promote_tick(task_id):
+    query = """
+            UPDATE ticks
+            SET priority = priority + 1
+            WHERE task_id=%s;
+    """
+    db.execute_query(query, (task_id,))
+    
+    return task_id
+    
+    
+def demote_tick(task_id):
+    query = """
+            UPDATE ticks
+            SET priority = priority - 1
+            WHERE task_id=%s;
+    """
+    db.execute_query(query, (task_id,))
+    
+    return task_id
+    
+    
+def delete_tick(task_id):
+    query = """
+            DELETE FROM ticks WHERE task_id=%(tid)s;
+            DELETE FROM project_ticks WHERE task_id=%(tid)s;
+    """
+    db.execute_query(query, {'tid': task_id})
+    
+    return task_id
+    
     
 def get_incomplete_ticks():
     query = """
@@ -85,12 +118,17 @@ def get_incomplete_ticks():
             FROM ticks 
             WHERE completed IS NULL
             OR completed > %s
-            ORDER BY created;"""
+            ORDER BY priority DESC, created;"""
     
     eight_hours_ago = datetime.datetime.now() - datetime.timedelta(hours=8)
     tasks = db.execute_query(query, (eight_hours_ago,))
     
     return tasks
+    
+    
+def get_tick(task_id):
+    query = """SELECT task_id, task_content FROM ticks WHERE task_id=%s;"""
+    return db.execute_query(query, (task_id,))
     
     
 def get_projects():
