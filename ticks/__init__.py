@@ -1,12 +1,17 @@
-from flask import Blueprint, render_template
+from flask import Flask
 
-blueprint = Blueprint('ticks', __name__, template_folder='templates', static_folder='static')
+class CustomFlask(Flask):
+    jinja_options = Flask.jinja_options.copy()
+    jinja_options.update(dict(
+        block_start_string='<%',
+        block_end_string='%>',
+        variable_start_string='%%',
+        variable_end_string='%%',
+        comment_start_string='<#',
+        comment_end_string='#>',
+    ))
+ 
+app = CustomFlask(__name__)
+app.config.from_object(__name__)
 
-LABEL = 'Ticks'
-ADMIN_LABEL = 'ticks'
-ICON = 'check'
-
-import ticks.core
-   
-from ticks.core import get_content_widget
-from ticks.core import get_admin_panel
+import webapp

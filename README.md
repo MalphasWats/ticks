@@ -1,4 +1,4 @@
 ticks
 ===================
 
-Todo web app blueprint for instruments
+Project management type thingy (without the manager bit)
